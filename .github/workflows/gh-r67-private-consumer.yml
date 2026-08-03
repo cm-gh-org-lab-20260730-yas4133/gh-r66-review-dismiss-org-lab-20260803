@@ -1,4 +1,5 @@
 name: GH-R67 protected environment private-canary consumer
+# Replay after exact `main` environment branch restriction.
 
 on:
   push:
