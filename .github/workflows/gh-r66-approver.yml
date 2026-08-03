@@ -1,0 +1,29 @@
+name: GH-R66 owned approval control
+
+on:
+  workflow_dispatch:
+    inputs:
+      pull_number:
+        description: Owned pull request number
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit trusted bot approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PULL_NUMBER: ${{ inputs.pull_number }}
+        run: |
+          gh api \
+            --method POST \
+            "/repos/${GH_REPO}/pulls/${PULL_NUMBER}/reviews" \
+            -f body='Trusted owner-configured GH-R66 approval control.' \
+            -f event='APPROVE'
